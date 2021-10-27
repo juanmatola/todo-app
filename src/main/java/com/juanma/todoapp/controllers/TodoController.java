@@ -23,11 +23,11 @@ public class TodoController {
 	@GetMapping()
 	public String index(ModelMap model){
 	
-		List<Task> completeTasks =  taskService.findCompletes();
-		List<Task> incompleteTasks = taskService.findIncompletes();
+		List<Task> completedTasks =  taskService.findCompletedTasks();
+		List<Task> uncompletedTasks = taskService.findUncompletedTasks();
 		
-		model.addAttribute("completeTasks", completeTasks );
-		model.addAttribute("incompleteTasks", incompleteTasks);
+		model.addAttribute("completedTasks", completedTasks );
+		model.addAttribute("uncompletedTasks", uncompletedTasks);
 		
 		return ViewNames.INDEX;
 	}

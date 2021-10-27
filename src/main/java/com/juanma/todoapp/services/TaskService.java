@@ -19,11 +19,11 @@ public class TaskService {
 		return taskRepository.findAll();
 	}
 	
-	public List<Task> findCompletes(){
+	public List<Task> findCompletedTasks(){
 		return taskRepository.findByStatus(true);
 	}
 	
-	public List<Task> findIncompletes(){
+	public List<Task> findUncompletedTasks(){
 		return taskRepository.findByStatus(false);
 	}
 

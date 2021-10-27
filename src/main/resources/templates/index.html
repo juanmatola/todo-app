@@ -35,7 +35,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="task : ${incompleteTasks}">
+                <tr th:each="task : ${uncompletedTasks}">
                     <td>
                         <a th:href="@{/task/changestatus/{id}(id=${task.id})}">
                         	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle" viewBox="0 0 16 16">
@@ -60,7 +60,7 @@
 
         <hr>
         
-        <div th:if="${!#lists.isEmpty(completeTasks)}">
+        <div th:if="${!#lists.isEmpty(completedTasks)}">
             <h3>Completed Tasks</h3>
 	        <table class="table table-success table-striped">
 	            <thead>
@@ -71,7 +71,7 @@
 	                </tr>
 	            </thead>
 	            <tbody>
-	                <tr th:each="task : ${completeTasks}">
+	                <tr th:each="task : ${completedTasks}">
 	                    <td>
 	                        <a th:href="@{/task/changestatus/{id}(id=${task.id})}">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle text-success" viewBox="0 0 16 16">
