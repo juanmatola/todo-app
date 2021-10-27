@@ -36,6 +36,17 @@ public class TaskService {
 		taskRepository.save(task);
 		
 	}
+	
+
+	public void removeById(String id) throws Exception {
+		
+		try {
+			taskRepository.deleteById(id);
+		} catch (Exception e) {
+			throw new Exception("Id incorrecto");
+		}
+		
+	}
 
 	private Task findById(String id) throws Exception {
 
@@ -48,4 +59,5 @@ public class TaskService {
 		}
 		
 	}
+
 }

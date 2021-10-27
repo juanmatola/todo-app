@@ -43,4 +43,16 @@ public class TodoController {
 		
 		return "redirect:/";
 	}
+	
+	@GetMapping("task/remove/{id}")
+	public String remove(@PathVariable("id") String id) {
+		
+		try {			
+			taskService.removeById(id);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
+		return "redirect:/";
+	}
 }
