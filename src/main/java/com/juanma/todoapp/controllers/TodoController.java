@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.juanma.todoapp.entities.Task;
 import com.juanma.todoapp.services.TaskService;
@@ -30,6 +32,18 @@ public class TodoController {
 		model.addAttribute("uncompletedTasks", uncompletedTasks);
 		
 		return ViewNames.INDEX;
+	}
+	
+	@PostMapping("task/create")
+	public String createTask(@RequestParam("taskDescription") String taskDescription) {
+		
+		try {
+			taskService.create(taskDescription);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
+		return "redirect:/";
 	}
 	
 	@GetMapping("task/changestatus/{id}")

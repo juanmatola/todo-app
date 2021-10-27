@@ -26,6 +26,16 @@ public class TaskService {
 	public List<Task> findUncompletedTasks(){
 		return taskRepository.findByStatus(false);
 	}
+	
+	public void create(String taskDescription) throws Exception{
+		
+		this.validate(taskDescription);
+		
+		Task newTask = new Task(taskDescription);
+		
+		taskRepository.save(newTask);
+		
+	}
 
 	public void changeStatusById(String id) throws Exception{
 		
@@ -37,13 +47,12 @@ public class TaskService {
 		
 	}
 	
-
 	public void removeById(String id) throws Exception {
 		
 		try {
 			taskRepository.deleteById(id);
 		} catch (Exception e) {
-			throw new Exception("Id incorrecto");
+			throw new Exception("Wrong id");
 		}
 		
 	}
@@ -55,7 +64,15 @@ public class TaskService {
 		if (res.isPresent()) {
 			return res.get();
 		}else {
-			throw new Exception("Id incorrecto");
+			throw new Exception("Wrong id");
+		}
+		
+	}
+	
+	private void validate(String taskDescription) throws Exception{
+		
+		if (taskDescription == null || taskDescription.isEmpty()) {
+			throw new Exception("The description cannot be null");
 		}
 		
 	}
