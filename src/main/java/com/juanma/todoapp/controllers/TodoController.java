@@ -11,13 +11,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.juanma.todoapp.config.RedirectTo;
+import com.juanma.todoapp.config.ViewNames;
 import com.juanma.todoapp.entities.Task;
 import com.juanma.todoapp.services.TaskService;
-import com.juanma.todoapp.util.ViewNames;
+import com.juanma.todoapp.util.interfaces.ErrorHandler;
 
 @Controller
-@RequestMapping("/")
-public class TodoController {
+@RequestMapping("/panel")
+public class TodoController implements ErrorHandler{
 
 	@Autowired
 	private TaskService taskService;
@@ -31,7 +33,7 @@ public class TodoController {
 		model.addAttribute("completedTasks", completedTasks );
 		model.addAttribute("uncompletedTasks", uncompletedTasks);
 		
-		return ViewNames.INDEX;
+		return ViewNames.PANEL;
 	}
 	
 	@PostMapping("task/create")
@@ -43,7 +45,7 @@ public class TodoController {
 			System.err.println(e.getMessage());
 		}
 		
-		return "redirect:/";
+		return "redirect:/panel";
 	}
 	
 	@GetMapping("task/changestatus/{id}")
@@ -55,7 +57,7 @@ public class TodoController {
 			System.err.println(e.getMessage());
 		}
 		
-		return "redirect:/";
+		return "redirect:/panel";
 	}
 	
 	@GetMapping("task/remove/{id}")
@@ -67,6 +69,13 @@ public class TodoController {
 			System.err.println(e.getMessage());
 		}
 		
-		return "redirect:/";
+		return "redirect:/panel";
+	}
+
+	@Override
+	public String errorHandle(Exception e) {
+		
+		return RedirectTo.PANEL.concat("?err=").concat(e.getMessage());
+		
 	}
 }
