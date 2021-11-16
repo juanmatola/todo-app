@@ -56,34 +56,44 @@ public class TodoController extends BaseUserController {
 			taskService.create(loggedUser, taskDescription);
 			
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			
+			return this.errorHandle(e);
+			
 		}
 		
-		return "redirect:/panel";
+		return RedirectTo.PANEL;
 	}
 	
 	@GetMapping("task/changestatus/{id}")
 	public String changeStatus(@PathVariable("id") String id) {
 		
 		try {			
+			
 			taskService.changeStatusById(id);
+			
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			
+			return this.errorHandle(e);
 		}
 		
-		return "redirect:/panel";
+		
+		return RedirectTo.PANEL;
 	}
 	
 	@GetMapping("task/remove/{id}")
 	public String remove(@PathVariable("id") String id) {
 		
-		try {			
+		try {		
+			
 			taskService.removeById(id);
+			
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			
+			return this.errorHandle(e);
+			
 		}
 		
-		return "redirect:/panel";
+		return RedirectTo.PANEL;
 	}
 
 	@Override
