@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.juanma.todoapp.entities.Task;
+import com.juanma.todoapp.entities.Usuario;
 import com.juanma.todoapp.respositories.TaskRepository;
 
 @Service
@@ -19,19 +20,23 @@ public class TaskService {
 		return taskRepository.findAll();
 	}
 	
-	public List<Task> findCompletedTasks(){
-		return taskRepository.findByStatus(true);
+	public List<Task> findCompletedTasks(Usuario owner){
+		
+		return taskRepository.findByOwnerAndStatus(owner, true);
+		
 	}
 	
-	public List<Task> findUncompletedTasks(){
-		return taskRepository.findByStatus(false);
+	public List<Task> findUncompletedTasks(Usuario owner){
+		
+		return taskRepository.findByOwnerAndStatus(owner, false);
+		
 	}
 	
-	public void create(String taskDescription) throws Exception{
+	public void create(Usuario user, String taskDescription) throws Exception{
 		
 		this.validate(taskDescription);
 		
-		Task newTask = new Task(taskDescription);
+		Task newTask = new Task(user, taskDescription);
 		
 		taskRepository.save(newTask);
 		

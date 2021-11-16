@@ -1,5 +1,6 @@
 package com.juanma.todoapp.entities;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +28,7 @@ public class Usuario {
 		this.email = email;
 		this.password = password;
 	}
-	
+
 	public String getId() {
 		return id;
 	}

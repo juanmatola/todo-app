@@ -13,25 +13,36 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.juanma.todoapp.config.RedirectTo;
 import com.juanma.todoapp.config.ViewNames;
+import com.juanma.todoapp.controllers.base.BaseUserController;
 import com.juanma.todoapp.entities.Task;
+import com.juanma.todoapp.entities.Usuario;
 import com.juanma.todoapp.services.TaskService;
-import com.juanma.todoapp.util.interfaces.ErrorHandler;
 
 @Controller
 @RequestMapping("/panel")
-public class TodoController implements ErrorHandler{
+public class TodoController extends BaseUserController {
 
 	@Autowired
 	private TaskService taskService;
 	
 	@GetMapping()
 	public String index(ModelMap model){
-	
-		List<Task> completedTasks =  taskService.findCompletedTasks();
-		List<Task> uncompletedTasks = taskService.findUncompletedTasks();
 		
-		model.addAttribute("completedTasks", completedTasks );
-		model.addAttribute("uncompletedTasks", uncompletedTasks);
+		
+		try {
+			
+			Usuario loggedUser = super.obtainLoggedUser();
+			List<Task> completedTasks =  taskService.findCompletedTasks(loggedUser);
+			List<Task> uncompletedTasks = taskService.findUncompletedTasks(loggedUser);
+			
+			model.addAttribute("completedTasks", completedTasks );
+			model.addAttribute("uncompletedTasks", uncompletedTasks);
+			
+		} catch (Exception e) {
+			
+			return this.errorHandle(e);
+			
+		}
 		
 		return ViewNames.PANEL;
 	}
@@ -40,7 +51,10 @@ public class TodoController implements ErrorHandler{
 	public String createTask(@RequestParam("taskDescription") String taskDescription) {
 		
 		try {
-			taskService.create(taskDescription);
+			
+			Usuario loggedUser = super.obtainLoggedUser();
+			taskService.create(loggedUser, taskDescription);
+			
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
