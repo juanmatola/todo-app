@@ -6,6 +6,7 @@ public final class ViewNames {
 	public static final String SINGUP = "sing-up";
 	public static final String PANEL = "panel";
 	public static final String ERROR = "error";
+	public static final String PROFILE = "profile";
 	
 	private ViewNames() {}
 }

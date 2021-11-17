@@ -32,6 +32,7 @@ public class TodoController extends BaseUserController {
 		try {
 			
 			Usuario loggedUser = super.obtainLoggedUser();
+			
 			List<Task> completedTasks =  taskService.findCompletedTasks(loggedUser);
 			List<Task> uncompletedTasks = taskService.findUncompletedTasks(loggedUser);
 			

@@ -6,6 +6,7 @@ public final class RedirectTo {
 	public final static String LOGIN = REDIRECT.concat("/");
 	public final static String SING_UP = REDIRECT.concat("/sing-up");
 	public final static String PANEL = REDIRECT.concat("/panel");
+	public static final String PROFILE = REDIRECT.concat("/profile");;
 	
 	private RedirectTo(){}
 

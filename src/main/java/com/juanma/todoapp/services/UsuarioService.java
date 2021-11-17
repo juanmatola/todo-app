@@ -46,29 +46,90 @@ public class UsuarioService implements UserDetailsService {
 		usuarioRepository.save(usuario);
 		
 	}
+	
+	public void editUsernameAndEmail(String id, String username, String email) throws Exception{
+		
+		Usuario user = this.findById(id);
+		
+		if (!user.getUsername().equals(username)) {			
+			this.validateUsername(username);	
+			user.setUsername(username);
+		}
+		
+		if (!user.getEmail().equals(email)) {
+			this.validateEmail(email);			
+			user.setEmail(email);
+		}
+		
+		this.usuarioRepository.save(user);
+		
+	}
 
+	public void editPassword(String id, String currentPassword, String newPassword, String newPasswordRepeat) throws Exception {
+		
+		Usuario user = this.findById(id);
+
+		if (new BCryptPasswordEncoder().matches(currentPassword, user.getPassword())) {
+			
+			this.validatePassword(newPassword, newPasswordRepeat);
+			
+			String encodePassword = new BCryptPasswordEncoder().encode(newPassword);
+			user.setPassword(encodePassword);
+			
+			this.usuarioRepository.save(user);
+			
+		}else {
+			throw new SingUpException("Incorrect password");
+		}
+		
+	}
+	
+	public void deleteById(String id) throws Exception {
+		
+		this.usuarioRepository.deleteById(id);
+		
+	}
+	
 	private void validate(	String username, 
  							String email, 
  							String password, 
  							String passwordRepeat) throws SingUpException {
  		
+ 		this.validateUsername(username);
+ 		
+ 		this.validatePassword(password, passwordRepeat);
+ 		
+ 		this.validateEmail(email);
+ 		
+ 	}
+	
+	private void validateUsername(String username) throws SingUpException{
+		
  		if(username.length() < 5 || username.equals("") || this.isUsernameAlreadyInUse(username)) {
  			throw new SingUpException("Invalid username");
  		}
+		
+	}
+	
+	private void validateEmail(String email) throws SingUpException{
+		
+ 		if(email.equals("") || this.isEmailAlreadyInUse(email)) {
+ 	 		throw new SingUpException("Invalid email");
+ 		}
+		
+	}
+	
+	private void validatePassword(String password, String passwordRepeat) throws SingUpException{
  		
- 		if(password.length() < 8 || password.equals("")) {
+		if(password.length() < 8 || password.equals("")) {
  			throw new SingUpException("Invalid password");
  		}
  		
  		if(!password.equals(passwordRepeat)) {
  			throw new SingUpException("Passwords must be the same");
  		}
- 		
- 		if(email.equals("") || this.isEmailAlreadyInUse(email)) {
- 	 		throw new SingUpException("Invalid email");
- 		}
- 		
- 	}
+		
+	}
 	
  	private boolean isUsernameAlreadyInUse(String username) {
 		Optional<Usuario> res = this.usuarioRepository.findByUsername(username);
@@ -106,6 +167,17 @@ public class UsuarioService implements UserDetailsService {
 
 	}
 	
+	public Usuario findById(String id) throws Exception {
+		Optional<Usuario> res = this.usuarioRepository.findById(id);
+		
+		if (res.isPresent()) {
+			return res.get();
+		}else{
+			throw new UsernameNotFoundException("Wrong id");
+		}
+		
+	}
+	
 	private List<GrantedAuthority> generateSinglePermitList(){
 		
 		List<GrantedAuthority> permits = new ArrayList<GrantedAuthority>();
@@ -123,4 +195,6 @@ public class UsuarioService implements UserDetailsService {
 		session.setAttribute("user_session", user);
 		
 	}
+
+
 }

@@ -27,7 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			.antMatchers("/css/**", "/js/**", "/img/**", "/", "/sing-up").permitAll()
-			.antMatchers("/**").authenticated()
+			.antMatchers("/**").hasRole("USER")
 			.and().formLogin().loginPage("/").loginProcessingUrl("/auth")
 			.usernameParameter("username").passwordParameter("password")
 			.defaultSuccessUrl("/panel").failureUrl("/?err=login%20error").permitAll()
