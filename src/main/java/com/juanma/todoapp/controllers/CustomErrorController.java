@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.juanma.todoapp.config.ViewNames;
+
 @Controller
 public class CustomErrorController implements ErrorController   {
 
@@ -41,13 +43,12 @@ public class CustomErrorController implements ErrorController   {
 			default:
 					errorMessage = errorMessage.concat("Something went wrong");
 				break;
-	
 		}
 		
 		model.addAttribute("code", errorCode);
 		model.addAttribute("message", errorMessage);
 		
-		return "error";
+		return ViewNames.ERROR;
 	}
 	
     private int getErrorCode(HttpServletRequest httpRequest) {
