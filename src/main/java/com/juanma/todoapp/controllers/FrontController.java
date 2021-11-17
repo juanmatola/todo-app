@@ -9,19 +9,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.juanma.todoapp.config.RedirectTo;
 import com.juanma.todoapp.config.ViewNames;
+import com.juanma.todoapp.controllers.base.BaseUserController;
 import com.juanma.todoapp.services.UsuarioService;
-import com.juanma.todoapp.util.interfaces.ErrorHandler;
 
 @Controller
 @RequestMapping("/")
-public class FrontController implements ErrorHandler {
+public class FrontController extends BaseUserController {
 
 	@Autowired
 	private UsuarioService usuarioService;
 	
 	@GetMapping()
 	public String index() {
-		return ViewNames.LOGIN;
+		
+		try {
+			
+			super.obtainLoggedUser();
+			
+			return RedirectTo.PANEL;
+			
+		} catch (Exception e) {
+			
+			return ViewNames.LOGIN;
+			
+		}
+		
 	}
 	
 	@GetMapping("/sing-up")
