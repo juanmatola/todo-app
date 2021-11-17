@@ -1,0 +1,59 @@
+.menu {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background-color: rgb(31, 31, 31);
+    overflow: hidden;
+    transition: 1s;
+}
+  
+.menu-content {
+    position: relative;
+    top: 10%;
+    left: 5%;
+    text-align: left;
+}
+
+.menu a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 1rem;
+    color: #b8b8b8;
+    display: block;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.menu a:hover, .menu a:focus {
+    color: #ffffff;
+}
+
+.nav_button {
+    top: 15px; 
+    left: 20px;
+    cursor: pointer;
+}
+.nav_button svg {
+    height: 35px;
+    width: 35px;
+    animation: rotateFade 1s;
+}
+
+@media screen and (max-height: 450px) {
+    .menu a {font-size: 20px}
+}
+  
+@keyframes rotateFade {
+    0%{ 
+        opacity: 0;
+        transform: rotate(0deg);
+        transform: scale(0.5);
+    }
+    100%{
+        opacity: 1;
+        transform: rotate(180deg);
+    }
+}
