@@ -5,7 +5,7 @@
     z-index: 1000;
     top: 0;
     left: 0;
-    background-color: rgb(31, 31, 31);
+    background-color: var(--main-primary-color-hover-opacity);
     overflow: hidden;
     transition: 1s;
 }
@@ -20,8 +20,8 @@
 .menu a {
     padding: 8px;
     text-decoration: none;
-    font-size: 1rem;
-    color: #b8b8b8;
+    font-size: 2rem;
+    color: var(--main-light-color);
     display: block;
     transition: 0.3s;
     font-weight: 500;
@@ -29,6 +29,7 @@
 
 .menu a:hover, .menu a:focus {
     color: #ffffff;
+    text-decoration: underline;
 }
 
 .nav_button {
@@ -42,8 +43,10 @@
     animation: rotateFade 1s;
 }
 
-@media screen and (max-height: 450px) {
-    .menu a {font-size: 20px}
+@media(max-width : 768px) {
+    body{
+        padding-top: 40px;
+    }   
 }
   
 @keyframes rotateFade {
