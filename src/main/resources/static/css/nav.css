@@ -15,9 +15,16 @@
     top: 10%;
     left: 5%;
     text-align: left;
+    height: 90%;
 }
 
-.menu a {
+.menu-content > .logout{
+    position: absolute;
+    bottom: 20px;
+    right: 25px;
+}
+
+.menu a:not(.btn){
     padding: 8px;
     text-decoration: none;
     font-size: 2rem;
@@ -27,7 +34,7 @@
     font-weight: 500;
 }
 
-.menu a:hover, .menu a:focus {
+.menu a:hover:not(.btn), .menu a:focus:not(.btn) {
     color: #ffffff;
     text-decoration: underline;
 }
