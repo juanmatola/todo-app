@@ -22,19 +22,9 @@ public class FrontController extends BaseUserController {
 	
 	@GetMapping()
 	public String index() {
-		
-		try {
-			
-			super.obtainLoggedUser();
-			
-			return RedirectTo.PANEL;
-			
-		} catch (Exception e) {
-			
-			return ViewNames.LOGIN;
-			
-		}
-		
+	
+		return ViewNames.LOGIN;
+				
 	}
 	
 	@GetMapping("/sing-up")
