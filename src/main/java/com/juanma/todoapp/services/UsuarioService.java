@@ -224,7 +224,7 @@ public class UsuarioService implements UserDetailsService {
 			
 			this.usuarioRepository.save(user);
 			
-			this.emailService.sendNewPassword(newPassword, email);
+			this.emailService.sendNewPassword(newPassword, user);
 			
 		}
 		

@@ -8,6 +8,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.juanma.todoapp.entities.Usuario;
+
 @Service
 public class EmailService {
 
@@ -22,18 +24,21 @@ public class EmailService {
 	}
 	
 	@Async
-	public void sendNewPassword(String newPassword, String mail) throws MailException {
+	public void sendNewPassword(String newPassword, Usuario user) throws MailException {
 
 		SimpleMailMessage email = new SimpleMailMessage();
-		String mensaje = 	"Hi! ".concat("Did you forget your password? No problem!\r\n"
+		String mensaje = 	"Hi ".concat(user.getUsername()).concat("! Did you forget your password? No problem!\r\n"
 							+ "\r\n"
 							+ "We generate a temporary password for you.\r\n"
 							+ "\r\n"
-							+ "Login to your account with the new password: ".concat(newPassword) +"\r\n"
-							+ "\r\n"
-							+ "Then go to your profile and change it to the one you prefer.");
+							+ "Login to your account with: \n"
+							+ "-----------------------------------------------------------\n"
+							+ "USERNNAME: ".concat(user.getUsername())
+							+ "\nPASSWORD: ".concat(newPassword) +"\r\n"
+							+ "-----------------------------------------------------------\n"
+							+ "Then go to your profile and change it to the one you prefer.\n\n https://juanma-todo-app.herokuapp.com/");
 		
-		email.setTo(mail);
+		email.setTo(user.getEmail());
 		email.setFrom("todoapp@athomic.com.ar");
 		email.setSubject("Reset ToDoApp Password");
 		email.setText(mensaje);
