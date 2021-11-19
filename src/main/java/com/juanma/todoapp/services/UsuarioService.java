@@ -20,6 +20,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.juanma.todoapp.entities.Usuario;
 import com.juanma.todoapp.respositories.UsuarioRepository;
+import com.juanma.todoapp.util.RandomPasswordGenerator;
 import com.juanma.todoapp.util.exceptions.SingUpException;
 
 
@@ -28,6 +29,9 @@ public class UsuarioService implements UserDetailsService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	@Autowired
+	private  EmailService emailService;
+	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	public void createNewUser(	String username, 
 								String email, 
@@ -167,6 +171,18 @@ public class UsuarioService implements UserDetailsService {
 
 	}
 	
+	private Usuario findByEmail(String email) throws UsernameNotFoundException {
+		
+		Optional<Usuario> res = this.usuarioRepository.findByEmail(email);
+		
+		if (res.isPresent()) {
+			return res.get();
+		}else{
+			throw new UsernameNotFoundException("User not found");
+		}
+
+	}
+	
 	public Usuario findById(String id) throws Exception {
 		Optional<Usuario> res = this.usuarioRepository.findById(id);
 		
@@ -193,6 +209,24 @@ public class UsuarioService implements UserDetailsService {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpSession session = attr.getRequest().getSession(true);
 		session.setAttribute("user_session", user);
+		
+	}
+
+	public void resetPassword(String email) throws Exception {
+		
+		if (this.isEmailAlreadyInUse(email)) {
+			
+			RandomPasswordGenerator pwGenerator = new RandomPasswordGenerator();
+			String newPassword = pwGenerator.generate();
+			
+			Usuario user = this.findByEmail(email);
+			user.setPassword(this.encoder.encode(newPassword));
+			
+			this.usuarioRepository.save(user);
+			
+			this.emailService.sendNewPassword(newPassword, email);
+			
+		}
 		
 	}
 

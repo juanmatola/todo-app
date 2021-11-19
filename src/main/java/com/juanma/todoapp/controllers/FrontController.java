@@ -1,5 +1,6 @@
 package com.juanma.todoapp.controllers;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +60,23 @@ public class FrontController extends BaseUserController {
 		}
 		
 				
+		return RedirectTo.LOGIN;
+	}
+	
+	@PostMapping("/password-reset")
+	public String passwordReset(@RequestParam("email") String email) {
+		
+		
+		try {
+			
+			this.usuarioService.resetPassword(email);
+			
+		} catch (Exception e) {
+			
+			System.err.println(e.getMessage());
+			
+		}
+
 		return RedirectTo.LOGIN;
 	}
 
