@@ -1,23 +1,15 @@
 package com.juanma.todoapp.services;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.juanma.todoapp.config.security.UserPrincipal;
 import com.juanma.todoapp.entities.Usuario;
 import com.juanma.todoapp.respositories.UsuarioRepository;
 import com.juanma.todoapp.util.RandomPasswordGenerator;
@@ -152,11 +144,8 @@ public class UsuarioService implements UserDetailsService {
 	
 		Usuario user = this.findByUsername(username);
 		
-		List<GrantedAuthority> permits = this.generateSinglePermitList();
-
-		this.createSession(user);
+		return new UserPrincipal(user);
 		
-		return new User(user.getUsername(), user.getPassword(), permits);
 	}
 	
 	private Usuario findByUsername(String username) throws UsernameNotFoundException {
@@ -194,24 +183,6 @@ public class UsuarioService implements UserDetailsService {
 		
 	}
 	
-	private List<GrantedAuthority> generateSinglePermitList(){
-		
-		List<GrantedAuthority> permits = new ArrayList<GrantedAuthority>();
-		
-		GrantedAuthority singlePermit = new SimpleGrantedAuthority("ROLE_USER");
-		permits.add(singlePermit);
-		
-		return permits;
-	}
-	
-	private void createSession(Usuario user) {
-		
-		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-		HttpSession session = attr.getRequest().getSession(true);
-		session.setAttribute("user_session", user);
-		
-	}
-
 	public void resetPassword(String email) throws Exception {
 		
 		if (this.isEmailAlreadyInUse(email)) {
