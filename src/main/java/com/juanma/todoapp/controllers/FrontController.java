@@ -22,8 +22,17 @@ public class FrontController extends BaseUserController {
 	
 	@GetMapping()
 	public String index() {
-	
-		return ViewNames.LOGIN;
+		
+		try {
+			super.obtainLoggedUser();
+			
+			return RedirectTo.PANEL;
+			
+		} catch (Exception e) {
+			
+			return ViewNames.LOGIN;
+			
+		}
 				
 	}
 	
